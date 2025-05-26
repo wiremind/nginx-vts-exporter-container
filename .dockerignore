@@ -1,0 +1,7 @@
+.git
+.github
+Dockerfile
+*.md
+*.log
+node_modules
+__pycache__
