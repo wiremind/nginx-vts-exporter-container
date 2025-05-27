@@ -23,7 +23,7 @@ jobs:
         run: |
           echo "VTS_VERSION=$(grep -oP '^ARG VTS_VERSION=\K.*' Containerfile)" >> $GITHUB_ENV
           echo "NGINX_VERSION=$(grep -oP '^ARG NGINX_VERSION=\K.*' Containerfile)" >> $GITHUB_ENV
-      - uses: docker/build-push-action@v5
+      - uses: docker/build-push-action@v6
         with:
           context: .
           file: ./Containerfile
