@@ -2,10 +2,8 @@ name: Publish
 
 on:
   push:
-    branches: [ main ]
-  workflow_dispatch:
-  schedule:
-    - cron: '0 3 * * 1'
+    tags:
+      - '*' # Trigger on any tag push
 
 jobs:
   build:
@@ -21,8 +19,8 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Get versions
         run: |
-          echo "VTS_VERSION=$(grep -oP '^ARG VTS_VERSION=\K.*' Containerfile)" >> $GITHUB_ENV
-          echo "NGINX_VERSION=$(grep -oP '^ARG NGINX_VERSION=\K.*' Containerfile)" >> $GITHUB_ENV
+          echo "NGINX_VERSION=$(grep -oP 'FROM docker.io/nginxinc/nginx-unprivileged:\K[0-9]+\.[0-9]+\.[0-9]+' Containerfile | head -n1)" >> $GITHUB_ENV
+          echo "VTS_VERSION=$(grep -oP 'nginx-module-vts/archive/refs/tags/v\K[0-9]+\.[0-9]+\.[0-9]+' Containerfile | head -n1)" >> $GITHUB_ENV
       - uses: docker/build-push-action@v6
         with:
           context: .
@@ -30,6 +28,7 @@ jobs:
           push: true
           tags: |
             ghcr.io/${{ github.repository }}:latest
+            ghcr.io/${{ github.repository }}:${{ github.ref_name }}
             ghcr.io/${{ github.repository }}:nginx-${{ env.NGINX_VERSION }}-vts-${{ env.VTS_VERSION }}
           labels: |
             org.opencontainers.image.source=${{ github.repositoryUrl }}
