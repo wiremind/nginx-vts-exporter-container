@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: docker/setup-buildx-action@v2
+      - uses: docker/setup-buildx-action@v3
       - name: Get versions
         run: |
           echo "VTS_VERSION=$(grep -oP '^ARG NGINX_VTS_VERSION="\K[^"]*' Containerfile)" >> $GITHUB_ENV
