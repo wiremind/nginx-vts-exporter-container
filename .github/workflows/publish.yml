@@ -33,3 +33,4 @@ jobs:
           labels: |
             org.opencontainers.image.source=${{ github.repositoryUrl }}
             org.opencontainers.image.version=${{ env.NGINX_VERSION }}-${{ env.VTS_VERSION }}
+            org.opencontainers.image.description="NGINX with VTS module, see https://github.com/wiremind/nginx-vts-exporter-container"
